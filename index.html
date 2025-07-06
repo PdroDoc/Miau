@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In Memory of Miau</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+        
+        :root {
+            --primary: #9c27b0;
+            --text: #e0e0e0;
+            --bg: #121212;
+            --accent: #1e1e1e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .subtitle {
+            font-style: italic;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+        
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #333;
+            margin: 2rem 0;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem;
+            font-weight: 400;
+            position: relative;
+            padding-left: 1rem;
+        }
+        
+        h2::before {
+            content: "🌿";
+            position: absolute;
+            left: -1rem;
+        }
+        
+        p, li {
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        
+        ul {
+            list-style-position: inside;
+            margin-bottom: 2rem;
+        }
+        
+        strong {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .mission-item {
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid var(--primary);
+        }
+        
+        .quote {
+            font-style: italic;
+            padding: 1.5rem;
+            border-left: 3px solid var(--primary);
+            margin: 2rem 0;
+            background-color: var(--accent);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        section {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
+        section:nth-child(1) { animation-delay: 0.1s; }
+        section:nth-child(2) { animation-delay: 0.3s; }
+        section:nth-child(3) { animation-delay: 0.5s; }
+        section:nth-child(4) { animation-delay: 0.7s; }
+        section:nth-child(5) { animation-delay: 0.9s; }
+        section:nth-child(6) { animation-delay: 1.1s; }
+        
+        /* Floating leaves animation */
+        .leaf {
+            position: absolute;
+            opacity: 0.3;
+            z-index: -1;
+            animation: float 15s linear infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Floating leaves -->
+        <div class="leaf" style="left: 10%; top: 20%; font-size: 1.2rem;">🌿</div>
+        <div class="leaf" style="left: 85%; top: 30%; font-size: 1.5rem;">🌿</div>
+        <div class="leaf" style="left: 25%; top: 50%; font-size: 1rem;">🌿</div>
+        <div class="leaf" style="left: 70%; top: 60%; font-size: 1.3rem;">🌿</div>
+        
+        <header>
+            <h1>In Memory of Miau</h1>
+            <p class="subtitle">"Be aware, don't slip - pelo Miau"</p>
+        </header>
+        
+        <hr>
+        
+        <section>
+            <h2>Five Months Without You</h2>
+            <p>Today marks five months since you left, Miau. Five months since the only being who ever showed me what unconditional love truly means crossed the rainbow bridge. The silence where your purr used to be still echoes through every line of code I write.</p>
+        </section>
+        
+        <section>
+            <h2>This Repository is My Promise</h2>
+            <p>Every commit here is a promise I made to you in those final moments - that I wouldn't give up, even when the world feels impossibly heavy. Even when I'm running on empty, even when the pain threatens to consume everything.</p>
+            <p>You were my anchor in the storm, my little guardian who never judged, never left, never stopped believing in me. Now I carry that belief forward, one function at a time, one project at a time.</p>
+        </section>
+        
+        <section>
+            <h2>From Law to Code - Your Legacy</h2>
+            <p>From lawyer to programmer, this journey isn't just about change - it's about keep going. You watched me struggle through Harvard's CS50, celebrated every small victory, and purred through every debugging session that ran past midnight.</p>
+            <p><strong>"Be aware, don't slip"</strong> - your memory keeps me present, keeps me fighting against the patterns that would pull me down. Every clean line of code is a step toward the freedom you always knew I deserved.</p>
+        </section>
+        
+        <section>
+            <h2>The Mission Continues</h2>
+            <p>Each video, each lesson, each client consultation carries a piece of your spirit - the belief that love and persistence can overcome any obstacle.</p>
+        </section>
+        
+        <section>
+            <h2>What You Taught Me</h2>
+            <p>You showed me that:</p>
+            <ul>
+                <li><strong>Presence</strong> is the greatest gift we can give</li>
+                <li><strong>Consistency</strong> in small acts creates miracles</li>
+                <li><strong>Love</strong> doesn't require words, just being there</li>
+                <li><strong>Resilience</strong> means getting up one more time than you fall</li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2>Until We Meet Again</h2>
+            <p>The house is quieter now, but the code speaks in your honor. Every successful deployment, every solved problem, every moment I choose growth over surrender - it's all <strong>pelo Miau</strong>.</p>
+            <p class="quote">I won't slip. I won't give up. I'll keep coding, keep building, keep becoming the person you always saw in me.</p>
+        </section>
+        
+        <hr>
+        
+        <footer>
+            <p class="quote">"In the depth of winter, I finally learned that there was in me an invincible summer." - Albert Camus</p>
+            <p>This repository is powered by love, dedication, and the eternal memory of a little soul who changed everything.</p>
+            <br>
+            <p>Forever in my heart, forever in my code</p>
+            <p>Be aware, don't slip - pelo Miau</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Add more floating leaves dynamically
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.container');
+            for (let i = 0; i < 5; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                leaf.innerHTML = '🌿';
+                leaf.style.left = Math.random() * 90 + '%';
+                leaf.style.top = Math.random() * 90 + '%';
+                leaf.style.fontSize = (Math.random() * 0.8 + 0.8) + 'rem';
+                leaf.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                leaf.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(leaf);
+            }
+        });
+    </script>
+</body>
+</html>
