@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homenagem ao Miau - Dias de Saudade</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            padding: 20px;
+            color: #e0e0e0;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Canvas para as folhas caindo */
+        #leavesCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(20, 20, 20, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            border: 1px solid rgba(100, 100, 100, 0.2);
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 30px 20px;
+            background: linear-gradient(135deg, #2c3e50 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+            color: #f0f0f0;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.8;
+            font-style: italic;
+            color: #a0a0a0;
+        }
+        
+        .memorial-info {
+            padding: 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .date-info {
+            background: rgba(40, 40, 40, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #555;
+        }
+        
+        .date-info .date-label {
+            font-size: 0.9em;
+            color: #888;
+            margin-bottom: 5px;
+        }
+        
+        .date-info .date-value {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #ccc;
+        }
+        
+        .days-counter {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid rgba(100, 100, 100, 0.3);
+        }
+        
+        .days-counter .counter-number {
+            font-size: 3.5em;
+            font-weight: 700;
+            color: #e74c3c;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .days-counter .counter-text {
+            font-size: 1.3em;
+            color: #bdc3c7;
+            font-weight: 500;
+        }
+        
+        .grid-container {
+            padding: 30px;
+            background: rgba(15, 15, 15, 0.7);
+        }
+        
+        .grid-title {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #ddd;
+            font-size: 1.4em;
+        }
+        
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(12px, 1fr));
+            gap: 2px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 10px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
+            border: 1px solid rgba(100, 100, 100, 0.2);
+        }
+        
+        .day-square {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .day-passed {
+            background: #444;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .day-passed:hover {
+            background: #666;
+            transform: scale(1.2);
+        }
+        
+        .day-today {
+            background: #c0392b;
+            box-shadow: 0 0 10px rgba(192, 57, 43, 0.7);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-square {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+        
+        .memory-section {
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .memory-text {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #d0d0d0;
+            max-width: 600px;
+            margin: 0 auto;
+            font-style: italic;
+        }
+        
+        .footer {
+            padding: 25px;
+            text-align: center;
+            background: rgba(20, 20, 20, 0.9);
+            color: #777;
+            font-size: 0.9em;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+            border: 1px solid rgba(100, 100, 100, 0.5);
+        }
+        
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .days-counter .counter-number {
+                font-size: 2.5em;
+            }
+            
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .legend {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="leavesCanvas"></canvas>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Lembrança Eterna do meu Mestre: Miau</h1>
+            <p class="subtitle">Lembrando-me: Be Aware - Dont Slip. </p>
+        </div>
+        
+        <div class="memorial-info">
+            <div class="date-info">
+                <div class="date-label"> Deixou-me em:</div>
+                <div class="date-value">6 de Fevereiro de 2025</div>
+            </div>
+            
+            <div class="days-counter">
+                <span class="counter-number" id="daysCount">212</span>
+                <div class="counter-text">dias de saudade</div>
+            </div>
+        </div>
+        
+        <div class="grid-container">
+            <h2 class="grid-title">Cada dia que passou sem você</h2>
+            <div class="days-grid" id="daysGrid"></div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-square day-passed"></div>
+                    <span>Dias de saudade</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-square day-today"></div>
+                    <span>Hoje</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="memory-section">
+            <p class="memory-text">
+               "It's an intense pain. But one I want to feel forever. Because this way I'll have you here with me. No pain is greater than how much I miss you. I won't slip. I will always stay aware, and keep my promise. My furry master."
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>Meu Mestre Peludo - Honrarei-te.</p>
+        </div>
+    </div>
+    
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // Data da partida do Miau
+        const departureDate = new Date('2025-02-06');
+        const today = new Date();
+        
+        // Calcular dias passados
+        const timeDiff = today.getTime() - departureDate.getTime();
+        const daysPassed = Math.floor(timeDiff / (1000 * 3600 * 24));
+        
+        // Atualizar contador
+        document.getElementById('daysCount').textContent = daysPassed;
+        
+        // Criar grade de dias
+        function createDaysGrid() {
+            const grid = document.getElementById('daysGrid');
+            const tooltip = document.getElementById('tooltip');
+            
+            for (let i = 0; i < daysPassed; i++) {
+                const daySquare = document.createElement('div');
+                daySquare.className = 'day-square day-passed';
+                
+                const currentDate = new Date(departureDate);
+                currentDate.setDate(currentDate.getDate() + i + 1);
+                
+                daySquare.addEventListener('mouseenter', (e) => {
+                    tooltip.textContent = `Dia ${i + 1}: ${currentDate.toLocaleDateString('pt-BR')}`;
+                    tooltip.style.opacity = '1';
+                });
+                
+                daySquare.addEventListener('mousemove', (e) => {
+                    tooltip.style.left = (e.pageX + 10) + 'px';
+                    tooltip.style.top = (e.pageY - 30) + 'px';
+                });
+                
+                daySquare.addEventListener('mouseleave', () => {
+                    tooltip.style.opacity = '0';
+                });
+                
+                grid.appendChild(daySquare);
+            }
+            
+            // Adicionar quadrado do dia atual
+            const todaySquare = document.createElement('div');
+            todaySquare.className = 'day-square day-today';
+            
+            todaySquare.addEventListener('mouseenter', (e) => {
+                tooltip.textContent = `Hoje: ${today.toLocaleDateString('pt-BR')}`;
+                tooltip.style.opacity = '1';
+            });
+            
+            todaySquare.addEventListener('mousemove', (e) => {
+                tooltip.style.left = (e.pageX + 10) + 'px';
+                tooltip.style.top = (e.pageY - 30) + 'px';
+            });
+            
+            todaySquare.addEventListener('mouseleave', () => {
+                tooltip.style.opacity = '0';
+            });
+            
+            grid.appendChild(todaySquare);
+        }
+        
+        // Atualizar automaticamente a cada dia
+        function updateDaily() {
+            const newToday = new Date();
+            const newTimeDiff = newToday.getTime() - departureDate.getTime();
+            const newDaysPassed = Math.floor(newTimeDiff / (1000 * 3600 * 24));
+            
+            if (newDaysPassed !== daysPassed) {
+                location.reload(); // Recarregar para atualizar
+            }
+        }
+        
+        // Efeito de folhas caindo
+        function createLeavesEffect() {
+            const canvas = document.getElementById('leavesCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Ajustar canvas para o tamanho da janela
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Configurações das folhas
+            const leaves = [];
+            const leafCount = 30;
+            const colors = ['#2c3e50', '#34495e', '#7f8c8d', '#95a5a6', '#bdc3c7'];
+            
+            // Criar folhas
+            for (let i = 0; i < leafCount; i++) {
+                leaves.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 5 + 2,
+                    speed: Math.random() * 1 + 0.5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    swing: Math.random() * 2 + 1,
+                    angle: Math.random() * Math.PI * 2
+                });
+            }
+            
+            // Animar folhas
+            function animateLeaves() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                leaves.forEach(leaf => {
+                    // Atualizar posição
+                    leaf.y += leaf.speed;
+                    leaf.x += Math.sin(leaf.angle) * 0.5;
+                    leaf.angle += 0.01 * leaf.swing;
+                    
+                    // Se a folha sair da tela, reiniciar no topo
+                    if (leaf.y > canvas.height) {
+                        leaf.y = -10;
+                        leaf.x = Math.random() * canvas.width;
+                    }
+                    
+                    // Desenhar folha
+                    ctx.beginPath();
+                    ctx.fillStyle = leaf.color;
+                    ctx.ellipse(leaf.x, leaf.y, leaf.size, leaf.size/1.5, leaf.angle, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                
+                requestAnimationFrame(animateLeaves);
+            }
+            
+            animateLeaves();
+        }
+        
+        // Inicializar
+        createDaysGrid();
+        createLeavesEffect();
+        
+        // Verificar atualização a cada hora
+        setInterval(updateDaily, 3600000);
+        
+        // Adicionar animação suave ao carregar
+        window.addEventListener('load', () => {
+            const squares = document.querySelectorAll('.day-square');
+            squares.forEach((square, index) => {
+                setTimeout(() => {
+                    square.style.opacity = '0';
+                    square.style.transform = 'scale(0)';
+                    square.style.opacity = '1';
+                    square.style.transform = 'scale(1)';
+                }, index * 2);
+            });
+        });
+    </script>
+</body>
+</html>
